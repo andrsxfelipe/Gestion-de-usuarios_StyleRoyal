@@ -1,6 +1,7 @@
 export function costumersView() {
     return `
     <button id="addUser">Add User</button>
+    <button id="importCsv">Import from CSV</button>
     <table id="user-table">
         <tr>
             <th>ID</th>
@@ -92,6 +93,24 @@ export function setupCostumers() {
     document.getElementById('addUser').addEventListener('click', function () {
         window.location.hash = 'newuser';
     });
+    document.getElementById('importCsv').addEventListener('click', function (event) {
+        event.preventDefault();
+        fetch('http://localhost:3000/import')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();  // parsea la respuesta como JSON
+            })
+            .then(data => {
+                location.reload();
+                // Aquí puedes actualizar la UI, mostrar mensaje, etc.
+            })
+            .catch(error => {
+                console.error('Error en fetch:', error);
+                // Mostrar error en pantalla si quieres
+            });
+    });
 }
 
 function showUsers() {
@@ -105,7 +124,7 @@ function showUsers() {
           <td>${user.phone}</td>
           <td>${user.name}</td>
           <td>${user.address}</td>
-          <td>${user.status ? "Active" : "Inactive" }</td>
+          <td>${user.status ? "Active" : "Inactive"}</td>
           <td>${user.note}</td>
           <td>${user.city}</td>
           <td>${user.main_language}</td>

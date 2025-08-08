@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import mysql from 'mysql2';
+import { insertRows } from './helpers.js'
 
 const app = express();
 const PORT = 3000;
@@ -8,9 +9,10 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
+
 const connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
+    user: 'Andrsxfelipe',
     password: 'idQ6kwx+',
     database: 'SR_Database1'
 });
@@ -58,6 +60,11 @@ app.post('/costumers', (req, res) => {
         if (err) return res.status(500).json({error: err.message});
         res.status(201).json({message: 'Usuario creado correctamente', id: results.insertId});
     });
+});
+
+app.get('/import', (req,res) => {
+    insertRows();
+    res.json({message: 'Import ejecutado'});
 });
 
 app.listen(PORT, () => {console.log(`Servidor corriendo en http://localhost:${PORT}`)});
